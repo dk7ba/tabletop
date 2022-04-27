@@ -70,15 +70,15 @@
         padding-left: 1em;
     }
     input[type=submit] {
-         height: 25px;
-         width: 5vw;
-         background-color: black;
-         color: cyan;
-         border: 2px solid cyan;
-         margin-right: 2vw;
+        height: 25px;
+        width: 5vw;
+        background-color: black;
+        color: cyan;
+        border: 2px solid cyan;
+        margin-right: 2vw;
     }
     input[type=submit]:hover {
-         color: hotpink;
+        color: hotpink;
     }
     input[type=submit]:focus {
         outline: none;
@@ -96,7 +96,7 @@
             margin-right: 10vw;
         }
         input[type=text] {
-            width: 60vw
+            width: 60vw;
         }
         input[type=submit] {
             min-width: 10vw;

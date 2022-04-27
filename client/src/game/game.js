@@ -1,5 +1,5 @@
-import Phaser from "phaser";
-import GameScene from "./scenes/gamescene";
+import Phaser from 'phaser';
+import GameScene from './scenes/gamescene';
 
 function launch(containerId) {
     return new Phaser.Game({
@@ -17,4 +17,4 @@ function launch(containerId) {
 }
 
 export default launch;
-export { launch };
+export { launch }

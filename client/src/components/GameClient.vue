@@ -19,7 +19,7 @@
             const game = await import('@/game/game');
             this.downloaded = true;
             this.$nextTick(() => {
-                this.gameInstance = game.launch(game.containerId);
+                this.gameInstance = game.launch(this.containerId);
             });
         },
         unmounted() {
