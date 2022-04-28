@@ -8,10 +8,10 @@ io.on('connection', function(socket) {
     socket.on('send', function(text)  {
         let userText = "<" + socket.id + "> " + text;
         if (text === 'card') {
-            io.emit('struct create', 130, 180);
+            io.emit('create', 130, 180);
         };
         if (text === 'token') {
-            io.emit('struct create', 100, 100);
+            io.emit('create', 100, 100);
         };
         io.emit('receive', userText);
     });
