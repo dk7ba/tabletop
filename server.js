@@ -2,8 +2,12 @@ const server = require('express')();
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
 
+let players = []
+
 io.on('connection', function(socket) {
     console.log('A user connected: ' + socket.id);
+
+    players.push(socket.id);
 
     socket.on('send', function(text)  {
         let userText = "<" + socket.id + "> " + text;
