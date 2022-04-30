@@ -14,14 +14,16 @@ export default class GameScene extends Phaser.Scene {
         this.socket = io('http://localhost:3000');
 
         this.socket.on('create', (width, height) => {
-            let token = this.add.rectangle(300, 300, width, height, 0xff0000).setInteractive();
+            let token = this.add.rectangle(300, 300, width, height, 0xff0000);
+            token.setInteractive();
             this.input.setDraggable(token);
         });
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
             gameObject.y = dragY;
-        }); 
+            console.log(gameObject.x + " " + gameObject.y);
+        });
     }
 
     update() {
