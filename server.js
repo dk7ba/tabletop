@@ -9,22 +9,24 @@ io.on('connection', function(socket) {
     let players = {};
 
     players[socket.id] = {
-        id: socket.id,
+        id: socket.id
     };
 
     socket.on('send', function(text)  {
         let userText = "<" + socket.id + "> " + text;
         if (text === 'card') {
-            io.emit('create', 130, 180);
+            let id = randomInt();
+            io.emit('create', 'token' + id, 130, 180);
         };
         if (text === 'token') {
-            io.emit('create', 100, 100);
+            let id = randomInt();
+            io.emit('create', 'token' + id, 100, 100);
         };
         io.emit('receive', userText);
     });
 
-    socket.on('storeToken', (gameObject) => {
-
+    socket.on('dragging', function(gameObject) {
+        socket.broadcast.emit('dragged', gameObject);
     });
 
     socket.on('disconnect', function() {
@@ -36,3 +38,7 @@ io.on('connection', function(socket) {
 http.listen(3000, function() {
     console.log('Server started!');
 });
+
+function randomInt() {
+    return Math.random() * (Number.MAX_SAFE_INTEGER - Number.MIN_SAFE_INTEGER) + Number.MIN_SAFE_INTEGER;
+}
