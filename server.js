@@ -8,9 +8,9 @@ io.on('connection', function(socket) {
 
     let players = {};
 
-    let player = "new Player(name)"; // Create player class to store player info for client-server interaction
-
-    players[socket.id] = player;
+    players[socket.id] = {
+        id: socket.id,
+    };
 
     socket.on('send', function(text)  {
         let userText = "<" + socket.id + "> " + text;
@@ -21,6 +21,10 @@ io.on('connection', function(socket) {
             io.emit('create', 100, 100);
         };
         io.emit('receive', userText);
+    });
+
+    socket.on('storeToken', (gameObject) => {
+
     });
 
     socket.on('disconnect', function() {
