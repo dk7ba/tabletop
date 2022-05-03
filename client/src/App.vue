@@ -7,7 +7,7 @@
     <div id="input">
       <ChatClient />
     </div>
-  </div>>
+  </div>
 </template>
 
 <script>
@@ -24,14 +24,19 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+}
+
 #app {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   background-color: black;
-  color: cyan;
+  color: white;
   display: flex;
+  position: fixed;
 }
 
 #game {
@@ -41,11 +46,11 @@ export default {
 
 #input {
   width: 50vw;
-  height: 100vh;
+  height: 10vh;
 }
 
 #border {
-  border-right: 2px solid cyan;
+  border-right: 1px solid white;
 }
 
 @media (max-width: 1000px) {

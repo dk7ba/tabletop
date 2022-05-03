@@ -25,6 +25,7 @@
                 textOutput: []
             }
         },
+        // TODO: Implement dropdown menu of sprites and objects to add to the game.
         methods: {
             submitText: function(event) {
                 event.preventDefault();
@@ -45,11 +46,16 @@
 
 <style scoped>
     #container {
-        text-align: left;
         display: flex;
         flex-direction: column;
+        text-align: left;
         margin-left: 1vw;
         min-height: 100vh;
+    }
+    #chat {
+        position: absolute;
+        top: 1vh;
+        left: 50vw;
     }
     h1 {
         text-align: center;
@@ -58,23 +64,23 @@
         color: hotpink; 
     }
     #input {
-        position: fixed;
-        margin-top: 95vh;
+        position: absolute;
+        margin-top: 94vh;
     }
     input[type=text] {
-        height: 20px;
+        height: 30px;
         width: 40vw;
-        border: 2px solid cyan;
+        border: 1px solid cyan;
         background-color: black;
         color: hotpink;
-        padding-left: 1em;
+        margin-left: 1vw;
     }
     input[type=submit] {
-        height: 25px;
+        height: 34px;
         width: 5vw;
         background-color: black;
         color: cyan;
-        border: 2px solid cyan;
+        border: 1px solid cyan;
         margin-right: 2vw;
     }
     input[type=submit]:hover {

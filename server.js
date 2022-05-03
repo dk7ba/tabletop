@@ -8,21 +8,31 @@ io.on('connection', function(socket) {
 
     let players = {};
 
+    // Store player info.
     players[socket.id] = {
-        id: socket.id
+        id: socket.id,
+        username: socket.id
     };
 
+    // Serial ID number for game objects.
+    let tokenId = 0;
+
     socket.on('send', function(text)  {
-        let userText = "<" + socket.id + "> " + text;
-        if (text === 'card') {
-            let id = randomInt();
-            io.emit('create', 'token' + id, 130, 180);
+        // Prevent sending empty messages.
+        if (text !== null && text !== "") {
+            // TODO: Implement a user command subsystem for users to control chat functions.
+            if (text.search('cu') >= 0) {
+                players[socket.id].username = text.substring(2).trim();
+            };
+            if (text === 'card') {
+                io.emit('create', 'token' + tokenId++, 130, 180);
+            };
+            if (text === 'token') {
+                io.emit('create', 'token' + tokenId++, 100, 100);
+            };
+
+            io.emit('receive', "<" + players[socket.id].username + "> " + text);
         };
-        if (text === 'token') {
-            let id = randomInt();
-            io.emit('create', 'token' + id, 100, 100);
-        };
-        io.emit('receive', userText);
     });
 
     socket.on('dragging', function(gameObject) {
@@ -38,7 +48,3 @@ io.on('connection', function(socket) {
 http.listen(3000, function() {
     console.log('Server started!');
 });
-
-function randomInt() {
-    return Math.random() * (Number.MAX_SAFE_INTEGER - Number.MIN_SAFE_INTEGER) + Number.MIN_SAFE_INTEGER;
-}

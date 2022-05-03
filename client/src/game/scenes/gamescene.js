@@ -11,6 +11,9 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        // TODO: Create grid overlay for token movement.
+        // TODO: Implement snap to grid movement.
+        // TODO: Enable users to upload their own background images.
         this.socket = io('http://localhost:3000');
 
         this.socket.on('create', (name, width, height) => {
