@@ -24,11 +24,8 @@ io.on('connection', function(socket) {
             if (text.search('cu') >= 0) {
                 players[socket.id].username = text.substring(2).trim();
             };
-            if (text === 'card') {
-                io.emit('create', 'token' + tokenId++, 130, 180);
-            };
             if (text === 'token') {
-                io.emit('create', 'token' + tokenId++, 100, 100);
+                io.emit('createToken', 'token' + tokenId++, 100, 100);
             };
 
             io.emit('receive', "<" + players[socket.id].username + "> " + text);

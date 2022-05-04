@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import io from 'socket.io-client';
 
 export default class GameScene extends Phaser.Scene {
+
     constructor() {
         super({ key: 'GameScene' });
     }
@@ -16,7 +17,7 @@ export default class GameScene extends Phaser.Scene {
         // TODO: Enable users to upload their own background images.
         this.socket = io('http://localhost:3000');
 
-        this.socket.on('create', (name, width, height) => {
+        this.socket.on('createToken', (name, width, height) => {
             let token = this.add.rectangle(300, 300, width, height, 0xff0000);
             token.setName(name);
             console.log("Created " + token.name);

@@ -34,6 +34,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   background-color: black;
+  background-image: radial-gradient(circle, navy, purple, black);
   color: white;
   display: flex;
   position: fixed;

@@ -12,7 +12,8 @@ function launch(containerId) {
             mode: Phaser.Scale.FIT,
             width: '100%',
             height: '100%'
-        }
+        },
+        backgroundColor: 0xffffff
     });
 }
 
