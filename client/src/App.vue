@@ -34,24 +34,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   background-color: black;
-  background-image: radial-gradient(circle, navy, purple, black);
   color: white;
   display: flex;
   position: fixed;
 }
 
 #game {
-  width: 50vw;
+  width: 70vw;
   height: 100vh;
 }
 
 #input {
-  width: 50vw;
+  width: 30vw;
   height: 10vh;
 }
 
 #border {
-  border-right: 1px solid white;
+  border-right: 1px solid red;
 }
 
 @media (max-width: 1000px) {

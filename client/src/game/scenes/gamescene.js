@@ -17,6 +17,8 @@ export default class GameScene extends Phaser.Scene {
         // TODO: Enable users to upload their own background images.
         this.socket = io('http://localhost:3000');
 
+        this.add.grid(64, 64, Math.pow(2, 12), Math.pow(2, 12), 64, 64, 0x00ffff, 0.8, 0xffffff);
+
         this.socket.on('createToken', (name, width, height) => {
             let token = this.add.rectangle(300, 300, width, height, 0xff0000);
             token.setName(name);

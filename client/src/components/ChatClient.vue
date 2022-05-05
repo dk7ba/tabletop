@@ -51,6 +51,7 @@
         text-align: left;
         margin-left: 1vw;
         min-height: 100vh;
+        background-color: aqua;
     }
     #chat {
         position: absolute;
@@ -69,7 +70,7 @@
     }
     input[type=text] {
         height: 30px;
-        width: 40vw;
+        width: 20vw;
         border: 1px solid cyan;
         background-color: black;
         color: hotpink;
@@ -81,7 +82,7 @@
         background-color: black;
         color: cyan;
         border: 1px solid cyan;
-        margin-right: 2vw;
+        margin-right: 1vw;
     }
     input[type=submit]:hover {
         color: hotpink;

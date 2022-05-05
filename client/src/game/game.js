@@ -13,7 +13,7 @@ function launch(containerId) {
             width: '100%',
             height: '100%'
         },
-        backgroundColor: 0xffffff
+        backgroundColor: 0x000000
     });
 }
 

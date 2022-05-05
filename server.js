@@ -25,7 +25,7 @@ io.on('connection', function(socket) {
                 players[socket.id].username = text.substring(2).trim();
             };
             if (text === 'token') {
-                io.emit('createToken', 'token' + tokenId++, 100, 100);
+                io.emit('createToken', 'token' + tokenId++, 64, 64);
             };
 
             io.emit('receive', "<" + players[socket.id].username + "> " + text);
