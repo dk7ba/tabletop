@@ -49,9 +49,8 @@
         display: flex;
         flex-direction: column;
         text-align: left;
-        margin-left: 1vw;
         min-height: 100vh;
-        background-color: aqua;
+        background-color: rgba(124, 104, 238, 0.32);
     }
     #chat {
         position: absolute;
@@ -63,6 +62,9 @@
     }
     .hotpink {
         color: hotpink; 
+    }
+    #output {
+        margin-left: 1vw;
     }
     #input {
         position: absolute;
