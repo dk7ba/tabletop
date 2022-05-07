@@ -12,14 +12,17 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-        // TODO: Create grid overlay for token movement.
+        let camera = this.cameras.main;
         // TODO: Implement snap to grid movement.
         // TODO: Enable users to upload their own background images.
+        // TODO: Correct game display for screen size/density.
         this.socket = io('http://localhost:3000');
 
-        let grid = this.add.grid(64, 64, Math.pow(2, 12), Math.pow(2, 12), 64, 64, 0xfaebd7, 0.5, 0xffffff);
+        let gridSize = Math.pow(2, 12);
+        let gridPos = gridSize / 2;
+        let cellSize = Math.pow(2, 6);
+        let grid = this.add.grid(gridPos, gridPos, gridSize, gridSize, cellSize, cellSize, 0xfaebd7, 0.2, 0xffffff);
         grid.setInteractive();
-        this.input.setDraggable(grid);
 
         this.socket.on('createToken', (name, width, height) => {
             let token = this.add.rectangle(300, 300, width, height, 0x483d8b);
@@ -36,6 +39,23 @@ export default class GameScene extends Phaser.Scene {
                     element.y = gameObject.y;
                 }
             });
+        });
+
+        this.input.on('gameobjectmove', (pointer, gameObject) => {
+            if (pointer.primaryDown && gameObject === grid) {
+                this.input.mouse.requestPointerLock();
+            }
+        });
+        
+        this.input.on('pointermove', (pointer) => {
+            if (this.input.mouse.locked) {
+                camera.scrollX -= pointer.movementX / camera.zoom;
+                camera.scrollY -= pointer.movementY / camera.zoom;
+            }
+        });
+
+        this.input.on('pointerup', () => {
+            this.input.mouse.releasePointerLock();
         });
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
