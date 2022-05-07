@@ -42,20 +42,10 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.input.on('gameobjectmove', (pointer, gameObject) => {
-            if (pointer.primaryDown && gameObject === grid) {
-                this.input.mouse.requestPointerLock();
+            if (pointer.primaryDown && gameObject === grid && this.input.getDragState(pointer) == 0) {
+                camera.scrollX -= (pointer.x - pointer.prevPosition.x) / camera.zoomX;
+                camera.scrollY -= (pointer.y - pointer.prevPosition.y) / camera.zoomY;
             }
-        });
-        
-        this.input.on('pointermove', (pointer) => {
-            if (this.input.mouse.locked) {
-                camera.scrollX -= pointer.movementX / camera.zoom;
-                camera.scrollY -= pointer.movementY / camera.zoom;
-            }
-        });
-
-        this.input.on('pointerup', () => {
-            this.input.mouse.releasePointerLock();
         });
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
