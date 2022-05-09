@@ -53,6 +53,13 @@ export default class GameScene extends Phaser.Scene {
             gameObject.y = dragY;
             this.socket.emit('dragging', gameObject);
         });
+
+        /**
+         * on pointerdown
+         *   get difference of coordinates between gameobject and gamegrid
+         *   divide coordinates by grid cell dimensions and floor the result
+         *   multiply result by cell grid dimension to get new gameobject coordinates
+         */
     }
 
     update() {
