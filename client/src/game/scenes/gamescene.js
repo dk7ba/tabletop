@@ -8,20 +8,63 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
+        let width = this.cameras.main.width;
+        let height = this.cameras.main.height;
+        let progressBar = this.add.graphics();
+        let progressBox = this.add.graphics();
+        let loadingText = this.make.text({
+            x: width / 2,
+            y: height / 2 - 50,
+            text: 'Loading...',
+            style: {
+                font: '20px monospace',
+                fill: '#ffffff'
+            }
+        });
+        
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(width / 2 - 170, height / 2, 320, 50);
+        loadingText.setPosition(width / 2 - loadingText.width / 2, height / 2 - 50);
+        this.load.image('welcome', 'assets/tabletop-welcome.png');
 
+        for (let i = 0; i < 100; i++) {
+            this.load.image('welcome' + i, '../assets/tabletop-welcome.png');
+        }
+
+        this.load.on('progress', (value) => {
+            console.log(value);
+            progressBar.clear();
+            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillRect(width / 2 - 160, height / 2 + 10, 300 * value, 30);
+        });
+
+        this.load.on('fileprogress', (file) => {
+            console.log(file.src);
+        });
+
+        this.load.on('complete', () => {
+            console.log('complete');
+            progressBar.destroy();
+            progressBox.destroy();
+            loadingText.destroy();
+        });
     }
 
     create() {
         let camera = this.cameras.main;
-        // TODO: Implement snap to grid movement.
+        let welcome = this.add.image(camera.width / 2, camera.height / 2, 'welcome');
+        let scaleX = camera.width / welcome.width;
+        let scaleY = camera.height / welcome.height;
+        welcome = welcome.setScale(scaleX, scaleY);
+        welcome.setOrigin(0.5, 0.5);
+        console.log('welcome');
         // TODO: Enable users to upload their own background images.
         // TODO: Correct game display for screen size/density.
         this.socket = io('http://localhost:3000');
 
         let gridSize = Math.pow(2, 12);
-        let gridPos = gridSize / 2;
         let cellSize = Math.pow(2, 6);
-        let grid = this.add.grid(gridPos, gridPos, gridSize, gridSize, cellSize, cellSize, 0xfaebd7, 0.2, 0xffffff);
+        let grid = this.add.grid(gridSize / 2, gridSize / 2, gridSize, gridSize, cellSize, cellSize, 0x000000, 0.0, 0xffffff);
         grid.setInteractive();
 
         this.socket.on('createToken', (name, width, height) => {
@@ -57,12 +100,12 @@ export default class GameScene extends Phaser.Scene {
         this.input.on('pointerup', (pointer, currentlyOver) => {
             let go = currentlyOver[0];
             if (go !== grid) {
-                let x = Math.floor((go.x - grid.x) / grid.cellWidth) * grid.cellWidth + grid.x + (grid.cellWidth / 2);
-                let y = Math.floor((go.y - grid.y) / grid.cellHeight) * grid.cellHeight + grid.y + (grid.cellHeight / 2);
+                let x = grid.cellWidth * (Math.floor((go.x - grid.x) / grid.cellWidth) + 0.5) + grid.x;
+                let y = grid.cellHeight * (Math.floor((go.y - grid.y) / grid.cellHeight) + 0.5) + grid.y;
                 go.x = x;
                 go.y = y;
             }
-        })
+        });
     }
 
     update() {
