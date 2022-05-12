@@ -14,6 +14,8 @@ io.on('connection', function(socket) {
         username: socket.id
     };
 
+    // TODO: Implement player roles
+
     // Serial ID number for game objects.
     let tokenId = 0;
 
