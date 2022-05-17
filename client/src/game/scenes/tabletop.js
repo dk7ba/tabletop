@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
 
-export default class GameScene extends Phaser.Scene {
+export default class Tabletop extends Phaser.Scene {
 
     constructor() {
         super({ key: 'GameScene' });
@@ -26,11 +26,11 @@ export default class GameScene extends Phaser.Scene {
         progressBox.fillRect(width / 2 - 170, height / 2, 320, 50);
         loadingText.setPosition(width / 2 - loadingText.width / 2, height / 2 - 50);
         this.load.image('welcome', 'assets/tabletop-welcome.png');
-
+        /*
         for (let i = 0; i < 100; i++) {
-            this.load.image('welcome' + i, '../assets/tabletop-welcome.png');
+            this.load.svg('welcome' + i, '../assets/tabletop-welcome.svg');
         }
-
+        */
         this.load.on('progress', (value) => {
             console.log(value);
             progressBar.clear();
@@ -58,8 +58,7 @@ export default class GameScene extends Phaser.Scene {
         welcome = welcome.setScale(scaleX, scaleY);
         welcome.setOrigin(0.5, 0.5);
         console.log('welcome');
-        // TODO: Enable users to upload their own background images.
-        // TODO: Correct game display for screen size/density.
+        
         this.socket = io('http://localhost:3000');
 
         let gridSize = Math.pow(2, 12);
@@ -100,10 +99,9 @@ export default class GameScene extends Phaser.Scene {
         this.input.on('pointerup', (pointer, currentlyOver) => {
             let go = currentlyOver[0];
             if (go !== grid) {
-                let x = grid.cellWidth * (Math.floor((go.x - grid.x) / grid.cellWidth) + 0.5) + grid.x;
-                let y = grid.cellHeight * (Math.floor((go.y - grid.y) / grid.cellHeight) + 0.5) + grid.y;
-                go.x = x;
-                go.y = y;
+                // Calculate game object coordinates for snap to grid pointer dragging
+                go.x = grid.cellWidth * (Math.floor((go.x - grid.x) / grid.cellWidth) + 0.5) + grid.x;
+                go.y = grid.cellHeight * (Math.floor((go.y - grid.y) / grid.cellHeight) + 0.5) + grid.y;
             }
         });
     }

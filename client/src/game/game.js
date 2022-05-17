@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
-import GameScene from './scenes/gamescene';
+import Tabletop from './scenes/tabletop';
 
 function launch(containerId) {
     return new Phaser.Game({
         type: Phaser.AUTO,
         parent: containerId,
         scene: [
-            GameScene
+            Tabletop
         ],
         scale: {
             mode: Phaser.Scale.FIT,
