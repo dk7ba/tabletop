@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Tabletop from './scenes/tabletop';
+import Tabletop from './scenes/Tabletop';
 
 function launch(containerId) {
     return new Phaser.Game({
