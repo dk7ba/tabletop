@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
 
+/**
+ * Tabletop scene
+ */
 export default class Tabletop extends Phaser.Scene {
 
     constructor() {
@@ -26,7 +29,6 @@ export default class Tabletop extends Phaser.Scene {
         progressBox.fillRect(width / 2 - 170, height / 2, 320, 50);
         loadingText.setPosition(width / 2 - loadingText.width / 2, height / 2 - 50);
         this.load.image('welcome', 'assets/tabletop-welcome.png');
-
         this.load.image('mario', 'assets/mario.png');
         this.load.image('tiles', 'assets/tiles.png');
 
@@ -51,15 +53,15 @@ export default class Tabletop extends Phaser.Scene {
 
     create() {
         let camera = this.cameras.main;
-        /*
+
         let welcome = this.add.image(camera.width / 2, camera.height / 2, 'welcome');
         let scaleX = camera.width / welcome.width;
         let scaleY = camera.height / welcome.height;
         welcome = welcome.setScale(scaleX, scaleY);
         welcome.setOrigin(0.5, 0.5);
+        welcome.setScrollFactor(0, 0);
         console.log('welcome');
-        */
-        
+
         this.socket = io('http://localhost:3000');
 
         const DEFAULT_WIDTH = 100;
@@ -76,10 +78,14 @@ export default class Tabletop extends Phaser.Scene {
         const map = this.make.tilemap({ data: level, tileWidth: DEFAULT_TILE_WIDTH, tileHeight: DEFAULT_TILE_HEIGHT });
         const tiles = map.addTilesetImage('mario');
         const layer = map.createLayer(0, tiles, 0, 0);
+        layer.setScrollFactor(1, 1);
+        layer.setInteractive();
+
+
         layer.putTileAt(0, 0, 0);
 
-        this.input.on('pointerdown', (pointer, currentlyOver) => {
-            layer.putTileAtWorldXY(0, pointer.x, pointer.y);
+        this.input.on('pointerdown', (pointer) => {
+            layer.putTileAtWorldXY(0, pointer.worldX, pointer.worldY);
         });
         
         let gridSize = map.widthInPixels;
@@ -89,8 +95,10 @@ export default class Tabletop extends Phaser.Scene {
         grid.setOutlineStyle(0xffffff, 0.2);
         grid.setInteractive();
         
-        camera.setBounds(-100, -100, grid.width + 100, grid.height + 100);
+        // Set camera bounds to grid size + a single grid cell border.
+        camera.setBounds(-cellSize, -cellSize, grid.width + cellSize, grid.height + cellSize);
         
+        // Signal from server to create and draw token.
         this.socket.on('createToken', (name) => {
             let token = this.add.rectangle(300, 300, cellSize, cellSize, 0x483d8b);
             token.setName(name);
@@ -99,6 +107,7 @@ export default class Tabletop extends Phaser.Scene {
             this.input.setDraggable(token);
         });
 
+        // Signal from server to update game object position.
         this.socket.on('dragged', (gameObject) => {
             this.children.getChildren().forEach(element => {
                 if (gameObject.name === element.name) {
@@ -107,20 +116,23 @@ export default class Tabletop extends Phaser.Scene {
                 }
             });
         });
-        /*
-        this.input.on('gameobjectmove', (pointer, gameObject) => {
-            if (pointer.primaryDown && gameObject === grid && this.input.getDragState(pointer) == 0) {
+
+        // Move the camera on pointer down.
+        this.input.on('gameobjectmove', (pointer) => {
+            if (pointer.primaryDown && this.input.getDragState(pointer) == 0) {
                 camera.scrollX -= (pointer.x - pointer.prevPosition.x) / camera.zoomX;
                 camera.scrollY -= (pointer.y - pointer.prevPosition.y) / camera.zoomY;
             }
         });
-        */
+
+        // Drag game object and send new data to server.
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
             gameObject.y = dragY;
             this.socket.emit('dragging', gameObject);
         });
-        /*
+
+        // After moving game object, correct its position to fit to grid/tilemap.
         this.input.on('pointerup', (pointer, currentlyOver) => {
             let go = currentlyOver[0];
             if (go !== grid) {
@@ -129,10 +141,9 @@ export default class Tabletop extends Phaser.Scene {
                 go.y = grid.cellHeight * (Math.floor((go.y - grid.y) / grid.cellHeight) + 0.5) + grid.y;
             }
         });
-        */
+        
     }
 
     update() {
-
     }
 }
