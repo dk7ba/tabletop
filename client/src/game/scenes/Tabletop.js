@@ -84,8 +84,14 @@ export default class Tabletop extends Phaser.Scene {
 
         layer.putTileAt(0, 0, 0);
 
+        // Place and remove tiles with the pointer.
         this.input.on('pointerdown', (pointer) => {
-            layer.putTileAtWorldXY(0, pointer.worldX, pointer.worldY);
+            if (layer.getTileAtWorldXY(pointer.worldX, pointer.worldY)) {
+                layer.removeTileAtWorldXY(pointer.worldX, pointer.worldY);
+            }
+            else {
+                layer.putTileAtWorldXY(0, pointer.worldX, pointer.worldY);
+            }
         });
         
         let gridSize = map.widthInPixels;
