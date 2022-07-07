@@ -31,6 +31,7 @@ export default class Tabletop extends Phaser.Scene {
         this.load.image('welcome', 'assets/tabletop-welcome.png');
         this.load.image('mario', 'assets/mario.png');
         this.load.image('tiles', 'assets/tiles.png');
+        this.load.image('sprites', 'assets/spritesheet.png');
 
         this.load.on('progress', (value) => {
             console.log(value);
@@ -66,8 +67,8 @@ export default class Tabletop extends Phaser.Scene {
 
         const DEFAULT_WIDTH = 100;
         const DEFAULT_HEIGHT = 100;
-        const DEFAULT_TILE_WIDTH = 32;
-        const DEFAULT_TILE_HEIGHT = 32;
+        const DEFAULT_TILE_WIDTH = 64;
+        const DEFAULT_TILE_HEIGHT = 64;
 
         const level = new Array(DEFAULT_HEIGHT);
         for (let i = 0; i < level.length; i++) {
@@ -76,13 +77,10 @@ export default class Tabletop extends Phaser.Scene {
 
         // When loading from an array, make sure to specify the tileWidth and tileHeight
         const map = this.make.tilemap({ data: level, tileWidth: DEFAULT_TILE_WIDTH, tileHeight: DEFAULT_TILE_HEIGHT });
-        const tiles = map.addTilesetImage('mario');
+        const tiles = map.addTilesetImage('sprites');
         const layer = map.createLayer(0, tiles, 0, 0);
         layer.setScrollFactor(1, 1);
         layer.setInteractive();
-
-
-        layer.putTileAt(0, 0, 0);
 
         // Place and remove tiles with the pointer.
         this.input.on('pointerdown', (pointer) => {
